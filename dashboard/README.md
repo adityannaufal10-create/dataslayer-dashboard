@@ -3,6 +3,8 @@
 > **Data Analytics Competition (DAC)**  
 > **Tema:** "Lotere Alamat" & Dekomposisi Disparitas Pendidikan Multidimensi di Indonesia  
 > **Koleksi Data:** BPS Susenas 2023–2025 & Publikasi IPM BPS  
+> **Live Production URL:** [https://dataslayer-dashboard.vercel.app](https://dataslayer-dashboard.vercel.app)  
+> **GitHub Repository:** [https://github.com/adityannaufal10-create/dataslayer-dashboard](https://github.com/adityannaufal10-create/dataslayer-dashboard)  
 
 ---
 
