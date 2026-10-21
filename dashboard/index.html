@@ -25,13 +25,6 @@
     <!-- Watermark Frame PNG Overlay Resmi (Watermark.png) -->
     <img src="assets/watermark.png" alt="DATA SLAYER Watermark Frame" class="ds-watermark-overlay-img" id="dsWatermarkOverlay">
 
-    <!-- Watermark DATA SLAYER: Bingkai Pink & Logo di Kanan Tengah Sesuai Ketentuan Teknis Lomba DAC -->
-    <aside class="ds-watermark-frame" title="Official Submission Watermark - Tim DATA SLAYER" id="dsWatermark">
-        <div class="ds-watermark-logo">DS</div>
-        <div class="ds-watermark-text">DATA SLAYER</div>
-        <div class="ds-watermark-sub">DAC 2026</div>
-    </aside>
-
     <!-- Header & Navigation -->
     <header class="app-header">
         <div class="header-container">
@@ -40,7 +33,7 @@
                 <div class="header-title-box">
                     <h1>
                         <span>Lotere Alamat & Disparitas Pendidikan</span>
-                        <span style="font-size:12px; font-weight:600; color:#f472b6; background:rgba(244,114,182,0.15); padding:2px 8px; border-radius:4px; border:1px solid rgba(244,114,182,0.3);">Susenas BPS</span>
+                        <span style="font-size:12px; font-weight:600; color:#f76ca3; background:rgba(247,108,163,0.12); padding:2px 8px; border-radius:4px; border:1px solid rgba(247,108,163,0.25);">Susenas BPS</span>
                     </h1>
                     <p>Eksplorasi Multidimensi Peluang Kelulusan Anak & Dekomposisi Kesenjangan Spasial</p>
                 </div>
@@ -57,13 +50,17 @@
             </nav>
 
             <div class="header-actions">
+                <button class="btn-header" id="btnToggleWatermark" title="Atur intensitas bingkai watermark agar tidak mengganggu fokus data">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <span id="txtToggleWatermark">Bingkai: Jelas</span>
+                </button>
                 <button class="btn-header" id="btnMetodologi">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                    <span>Metodologi & Data BPS</span>
+                    <span>Metodologi</span>
                 </button>
                 <button class="btn-header primary" id="btnPrintPdf">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-                    <span>Cetak / PDF 2 Hal</span>
+                    <span>Cetak PDF</span>
                 </button>
             </div>
         </div>

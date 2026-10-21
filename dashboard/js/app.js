@@ -64,6 +64,9 @@ document.addEventListener("DOMContentLoaded", () => {
         theilInsightText: document.getElementById("theilInsightText"),
         
         // Modal
+        btnToggleWatermark: document.getElementById("btnToggleWatermark"),
+        txtToggleWatermark: document.getElementById("txtToggleWatermark"),
+        dsWatermarkOverlay: document.getElementById("dsWatermarkOverlay"),
         btnMetodologi: document.getElementById("btnMetodologi"),
         btnDisclModal: document.getElementById("btnDisclModal"),
         modalOverlay: document.getElementById("modalOverlay"),
@@ -222,6 +225,23 @@ document.addEventListener("DOMContentLoaded", () => {
         elements.btnPrintPdf.addEventListener("click", () => {
             window.print();
         });
+
+        // Watermark Mode Toggle (Jelas 72% -> Halus 28% -> Nonaktif 0%)
+        let watermarkModes = [
+            { name: "Bingkai: Jelas", cls: "" },
+            { name: "Bingkai: Halus", cls: "soft" },
+            { name: "Bingkai: Nonaktif", cls: "off" }
+        ];
+        let currentWatermarkIdx = 0;
+
+        if (elements.btnToggleWatermark && elements.dsWatermarkOverlay) {
+            elements.btnToggleWatermark.addEventListener("click", () => {
+                currentWatermarkIdx = (currentWatermarkIdx + 1) % watermarkModes.length;
+                const m = watermarkModes[currentWatermarkIdx];
+                elements.dsWatermarkOverlay.className = "ds-watermark-overlay-img " + m.cls;
+                elements.txtToggleWatermark.innerText = m.name;
+            });
+        }
     }
 
     function updateProvinceSelection(kode) {

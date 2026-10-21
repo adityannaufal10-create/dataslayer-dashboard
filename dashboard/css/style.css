@@ -4,30 +4,32 @@
    ========================================================================== */
 
 :root {
-    --bg-main: #0f172a;
-    --bg-card: #1e293b;
-    --bg-card-hover: #273549;
-    --bg-input: #0f172a;
-    --border-card: #334155;
-    --border-accent: #f76ca3;
+    --bg-main: #0a0e17;
+    --bg-card: rgba(18, 26, 42, 0.94);
+    --bg-card-hover: rgba(26, 37, 58, 0.96);
+    --bg-input: #0e1422;
+    --border-card: rgba(255, 255, 255, 0.08);
+    --border-accent: rgba(247, 108, 163, 0.4);
     
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
     
     --brand-pink: #f76ca3;
-    --brand-pink-glow: rgba(247, 108, 163, 0.35);
-    --brand-pink-dark: #db2777;
+    --brand-pink-soft: rgba(247, 108, 163, 0.12);
+    --brand-pink-border: rgba(247, 108, 163, 0.35);
+    --brand-pink-glow: rgba(247, 108, 163, 0.25);
+    --brand-pink-dark: #be185d;
     --brand-purple: #8b5cf6;
-    --brand-blue: #3b82f6;
+    --brand-blue: #38bdf8;
     --brand-emerald: #10b981;
     --brand-amber: #f59e0b;
     --brand-rose: #f43f5e;
     
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
-    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -2px rgba(0,0,0,0.4);
-    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.5), 0 4px 6px -4px rgba(0,0,0,0.5);
-    --shadow-pink: 0 0 20px rgba(247, 108, 163, 0.45);
+    --shadow-md: 0 4px 12px -2px rgba(0,0,0,0.45);
+    --shadow-lg: 0 12px 24px -4px rgba(0,0,0,0.6);
+    --shadow-pink: 0 0 16px rgba(247, 108, 163, 0.3);
 }
 
 * {
@@ -45,7 +47,8 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
-    padding-right: 28px; /* Extra margin for the Data Slayer Watermark frame */
+    /* Memberi ruang khusus 180px di sisi kanan untuk logo watermark agar tidak menabrak teks/kartu */
+    padding: 0 180px 24px 0;
 }
 
 /* Official PNG Watermark Frame Overlay from Watermark.png */
@@ -57,78 +60,23 @@ body {
     height: 100vh;
     object-fit: fill;
     pointer-events: none;
-    z-index: 9998;
-    opacity: 0.95;
+    z-index: 95;
+    opacity: 0.72; /* Opasitas halus dan harmonis, tidak menyilaukan */
     transition: opacity 0.3s ease;
 }
 
-/* Data Slayer Watermark Badge - Pink Frame & Logo on the right side */
-.ds-watermark-frame {
-    position: fixed;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 9999;
-    pointer-events: auto;
-    background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));
-    border: 2px solid var(--brand-pink);
-    border-radius: 12px;
-    padding: 12px 6px;
-    box-shadow: 0 0 18px var(--brand-pink-glow), var(--shadow-lg);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(8px);
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    cursor: pointer;
+.ds-watermark-overlay-img.soft {
+    opacity: 0.28;
 }
 
-.ds-watermark-frame:hover {
-    box-shadow: 0 0 25px rgba(247, 108, 163, 0.7);
-    border-color: #fa82b2;
-    transform: translateY(-50%) scale(1.03);
-}
-
-.ds-watermark-logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--brand-pink), #db2777);
-    color: white;
-    width: 24px;
-    height: 24px;
-    border-radius: 6px;
-    font-weight: 900;
-    font-size: 11px;
-    writing-mode: horizontal-tb;
-    box-shadow: 0 2px 8px rgba(247, 108, 163, 0.5);
-}
-
-.ds-watermark-text {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #f76ca3;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.ds-watermark-sub {
-    font-size: 8.5px;
-    color: var(--text-muted);
-    letter-spacing: 1px;
-    font-weight: 500;
+.ds-watermark-overlay-img.off {
+    opacity: 0;
 }
 
 /* App Header */
 .app-header {
-    background: rgba(30, 41, 59, 0.85);
-    backdrop-filter: blur(12px);
+    background: rgba(18, 26, 42, 0.92);
+    backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border-card);
     position: sticky;
     top: 0;
@@ -1013,7 +961,22 @@ body {
 }
 
 /* Responsive adjustments */
-@media (max-width: 1080px) {
+@media (max-width: 1400px) {
+    body {
+        padding-right: 120px;
+    }
+    .ds-watermark-overlay-img {
+        opacity: 0.50;
+    }
+}
+
+@media (max-width: 1100px) {
+    body {
+        padding-right: 0 !important;
+    }
+    .ds-watermark-overlay-img {
+        display: none; /* Jangan tampilkan bingkai penuh di layar kecil agar tidak menutupi kartu */
+    }
     .page1-grid {
         grid-template-columns: 1fr;
     }
