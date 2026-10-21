@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Application State
     const state = {
         activePage: "page1",
+        simUplift: 0,
+        activeMapLayer: "aps",
         selectedProfile: {
             provinsiKode: "33", // Default Jawa Tengah
             daerah: "Perdesaan",
@@ -66,6 +68,18 @@ document.addEventListener("DOMContentLoaded", () => {
         // Modal
         btnToggleWatermark: document.getElementById("btnToggleWatermark"),
         txtToggleWatermark: document.getElementById("txtToggleWatermark"),
+        simSlider: document.getElementById("simSlider"),
+        simValPill: document.getElementById("simValPill"),
+        simUpliftText: document.getElementById("simUpliftText"),
+        btnView2D: document.getElementById("btnView2D"),
+        btnView3D: document.getElementById("btnView3D"),
+        btnScatter2D: document.getElementById("btnScatter2D"),
+        btnScatter3D: document.getElementById("btnScatter3D"),
+        mapSearchInput: document.getElementById("mapSearchInput"),
+        regionList: document.getElementById("regionList"),
+        threeMapContainer: document.getElementById("threeMapContainer"),
+        scatter2DContainer: document.getElementById("scatter2DContainer"),
+        scatter3DContainer: document.getElementById("scatter3DContainer"),
         dsWatermarkOverlay: document.getElementById("dsWatermarkOverlay"),
         btnMetodologi: document.getElementById("btnMetodologi"),
         btnDisclModal: document.getElementById("btnDisclModal"),
@@ -119,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function init() {
         populateProvinceDropdowns();
         populateKabupatenDropdown();
+        populateRegionDatalist();
         setupEventListeners();
         renderAll();
         initPage2Charts();
@@ -126,6 +141,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Populate Provinces
+        function populateRegionDatalist() {
+        if (!elements.regionList) return;
+        elements.regionList.innerHTML = "";
+        window.DATA_SLAYER.provinces.forEach(p => {
+            const opt = document.createElement("option");
+            opt.value = p.nama;
+            opt.label = `Provinsi (Rank #${p.peringkat})`;
+            elements.regionList.appendChild(opt);
+        });
+        window.DATA_SLAYER.jatengRegencies.forEach(k => {
+            const opt = document.createElement("option");
+            opt.value = k.nama;
+            opt.label = `Jateng: ${k.tipologi}`;
+            elements.regionList.appendChild(opt);
+        });
+    }
+
     function populateProvinceDropdowns() {
         elements.provSelect.innerHTML = "";
         elements.p2ProvFilter.innerHTML = "";
@@ -242,6 +274,97 @@ document.addEventListener("DOMContentLoaded", () => {
                 elements.txtToggleWatermark.innerText = m.name;
             });
         }
+
+        // Simulation Slider (Intervensi Bantuan PIP / Beasiswa)
+        if (elements.simSlider) {
+            elements.simSlider.addEventListener("input", (e) => {
+                const val = parseInt(e.target.value, 10);
+                elements.simValPill.innerText = "Rp " + val.toLocaleString("id-ID") + " / tahun";
+                // Max bonus +14.5 pp when receiving max scholarship
+                const uplift = parseFloat(((val / 1800000) * 14.5).toFixed(1));
+                state.simUplift = uplift;
+                elements.simUpliftText.innerText = (uplift > 0 ? "+" + uplift : "+0") + " pp Peluang Tamat";
+                renderAll();
+            });
+        }
+
+        // Map View Mode Toggle (2D Leaflet vs 3D Three.js Pillars)
+        if (elements.btnView2D && elements.btnView3D) {
+            elements.btnView2D.addEventListener("click", () => {
+                elements.btnView2D.classList.add("active");
+                elements.btnView3D.classList.remove("active");
+                document.getElementById("mapProvinsi").style.display = "block";
+                elements.threeMapContainer.style.display = "none";
+                if (state.map) state.map.invalidateSize();
+            });
+
+            elements.btnView3D.addEventListener("click", () => {
+                elements.btnView3D.classList.add("active");
+                elements.btnView2D.classList.remove("active");
+                document.getElementById("mapProvinsi").style.display = "none";
+                elements.threeMapContainer.style.display = "block";
+                if (window.ThreeVisuals) {
+                    ThreeVisuals.init3DSpatial("threeMapContainer", "threeMapHud");
+                }
+            });
+        }
+
+        // Scatter View Mode Toggle (2D Chart.js vs 3D Three.js Cube)
+        if (elements.btnScatter2D && elements.btnScatter3D) {
+            elements.btnScatter2D.addEventListener("click", () => {
+                elements.btnScatter2D.classList.add("active");
+                elements.btnScatter3D.classList.remove("active");
+                elements.scatter2DContainer.style.display = "block";
+                elements.scatter3DContainer.style.display = "none";
+                if (state.charts.scatter) state.charts.scatter.resize();
+            });
+
+            elements.btnScatter3D.addEventListener("click", () => {
+                elements.btnScatter3D.classList.add("active");
+                elements.btnScatter2D.classList.remove("active");
+                elements.scatter2DContainer.style.display = "none";
+                elements.scatter3DContainer.style.display = "block";
+                if (window.ThreeVisuals) {
+                    ThreeVisuals.init3DScatter("scatter3DContainer", "threeScatterHud");
+                }
+            });
+        }
+
+        // Map Search & Autocomplete
+        if (elements.mapSearchInput) {
+            elements.mapSearchInput.addEventListener("change", (e) => {
+                const query = e.target.value.trim().toLowerCase();
+                if (!query) return;
+
+                // Search provinces
+                const foundProv = window.DATA_SLAYER.provinces.find(p => p.nama.toLowerCase().includes(query));
+                if (foundProv && state.map && PROVINCE_COORDS[foundProv.kode]) {
+                    updateProvinceSelection(foundProv.kode);
+                    state.map.flyTo(PROVINCE_COORDS[foundProv.kode], 7, { duration: 1.2 });
+                    return;
+                }
+
+                // Search Central Java Regencies
+                const foundKab = window.DATA_SLAYER.jatengRegencies.find(k => k.nama.toLowerCase().includes(query));
+                if (foundKab && state.map && JATENG_COORDS[foundKab.nama]) {
+                    state.selectedKabJateng = foundKab.nama;
+                    elements.kabSelectJateng.value = foundKab.nama;
+                    renderKabupatenDetail();
+                    highlightKabupatenInScatter();
+                    state.map.flyTo(JATENG_COORDS[foundKab.nama], 10, { duration: 1.2 });
+                }
+            });
+        }
+
+        // Map Thematic Layer Selector Buttons
+        document.querySelectorAll(".map-layer-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                document.querySelectorAll(".map-layer-btn").forEach(b => b.classList.remove("active"));
+                e.target.classList.add("active");
+                state.activeMapLayer = e.target.getAttribute("data-layer");
+                updateMapThematicLayer();
+            });
+        });
     }
 
     function updateProvinceSelection(kode) {
@@ -291,6 +414,19 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedResults = ModelEngine.calculateProfileProbabilities(state.selectedProfile);
         const benchmarkResults = ModelEngine.calculateProfileProbabilities(state.benchmarkProfile);
         const gapAnalysis = ModelEngine.calculateOpportunityGap(selectedResults, benchmarkResults);
+
+        // Apply Simulation Uplift to selected results if active
+        if (state.simUplift > 0) {
+            const rawSma = selectedResults.stages.SMA.probability;
+            selectedResults.stages.SMA.probability = Math.min(100.0, parseFloat((rawSma + state.simUplift).toFixed(2)));
+            const rawPt = selectedResults.stages.PT.probability;
+            selectedResults.stages.PT.probability = Math.min(100.0, parseFloat((rawPt + (state.simUplift * 0.6)).toFixed(2)));
+            // Recalculate gap
+            gapAnalysis.smaProbSelected = selectedResults.stages.SMA.probability;
+            gapAnalysis.smaGap = parseFloat((benchmarkResults.stages.SMA.probability - gapAnalysis.smaProbSelected).toFixed(2));
+            gapAnalysis.gaps.SMA.selected = selectedResults.stages.SMA.probability;
+            gapAnalysis.gaps.SMA.gap = gapAnalysis.smaGap;
+        }
 
         renderKPIs(selectedResults, benchmarkResults, gapAnalysis);
         renderFunnel(selectedResults, benchmarkResults, gapAnalysis);
@@ -466,6 +602,49 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     // MAP INTEGRATION (Leaflet)
     // ==========================================
+        // Update Map Styling Dynamically based on active thematic layer
+    function updateMapThematicLayer() {
+        if (!state.map || !state.mapMarkers) return;
+
+        state.mapMarkers.forEach(item => {
+            const prov = window.DATA_SLAYER.provinces.find(p => p.kode === item.kode);
+            if (!prov) return;
+
+            let color = "#3b82f6";
+            let radius = 7;
+
+            if (state.activeMapLayer === "aps") {
+                if (prov.aps_16_18 >= 80) color = "#10b981";
+                else if (prov.aps_16_18 >= 72) color = "#3b82f6";
+                else if (prov.aps_16_18 >= 65) color = "#f59e0b";
+                else color = "#f43f5e";
+                radius = Math.max(6, (prov.aps_16_18 - 50) * 0.25);
+            } else if (state.activeMapLayer === "ikp") {
+                // Higher rank = greener
+                if (prov.peringkat <= 10) color = "#10b981";
+                else if (prov.peringkat <= 25) color = "#38bdf8";
+                else color = "#f43f5e";
+                radius = 7.5;
+            } else if (state.activeMapLayer === "hls") {
+                if (prov.hls >= 14) color = "#10b981";
+                else if (prov.hls >= 13) color = "#38bdf8";
+                else color = "#f59e0b";
+                radius = (prov.hls - 8) * 1.2;
+            } else if (state.activeMapLayer === "klaster") {
+                color = prov.peringkat <= 8 ? "#10b981" : prov.peringkat <= 22 ? "#3b82f6" : "#f43f5e";
+                radius = 8;
+            }
+
+            const isSel = prov.kode === state.selectedProfile.provinsiKode;
+            item.marker.setStyle({
+                fillColor: isSel ? "#f76ca3" : color,
+                color: isSel ? "#fff" : color,
+                radius: isSel ? radius + 4 : radius,
+                weight: isSel ? 2.5 : 1
+            });
+        });
+    }
+
     function initMap() {
         const mapContainer = document.getElementById("mapProvinsi");
         if (!mapContainer || typeof L === "undefined") return;

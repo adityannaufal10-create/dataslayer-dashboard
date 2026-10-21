@@ -774,9 +774,221 @@ body {
     letter-spacing: 0.5px;
 }
 
+/* Enhanced Spatial & 3D Styling */
+.map-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.map-layer-selector {
+    display: flex;
+    gap: 4px;
+    background: rgba(14, 20, 34, 0.9);
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid var(--border-card);
+}
+
+.map-layer-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.map-layer-btn.active {
+    background: var(--brand-pink);
+    color: #fff;
+    box-shadow: 0 1px 6px rgba(247, 108, 163, 0.4);
+}
+
+.map-search-box {
+    position: relative;
+    width: 220px;
+}
+
+.map-search-input {
+    width: 100%;
+    background: rgba(14, 20, 34, 0.9);
+    border: 1px solid var(--border-card);
+    border-radius: 8px;
+    padding: 6px 12px 6px 28px;
+    color: var(--text-primary);
+    font-size: 11.5px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.map-search-input:focus {
+    border-color: var(--brand-pink);
+}
+
+.map-search-icon {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.view-mode-toggle {
+    display: flex;
+    background: rgba(14, 20, 34, 0.9);
+    border: 1px solid var(--border-card);
+    padding: 3px;
+    border-radius: 8px;
+    gap: 3px;
+}
+
+.view-mode-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.view-mode-btn.active {
+    background: linear-gradient(135deg, #0284c7, #38bdf8);
+    color: #fff;
+}
+
+.three-container-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #111a2e 0%, #080c14 100%);
+    border-radius: 8px;
+}
+
+.three-hud-box {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(14, 20, 34, 0.92);
+    border: 1px solid rgba(247, 108, 163, 0.4);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 10px;
+    padding: 10px 14px;
+    z-index: 1000;
+    pointer-events: none;
+    display: none;
+    animation: fadeIn 0.2s ease;
+}
+
+/* Pulsing Hotspot Radar Marker on Map */
+.pulse-beacon {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ef4444;
+    position: relative;
+    box-shadow: 0 0 10px #ef4444;
+}
+
+.pulse-beacon::after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid #ef4444;
+    animation: pulseWave 1.8s infinite ease-out;
+}
+
+@keyframes pulseWave {
+    0% { transform: scale(0.6); opacity: 1; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Interactive Simulation Slider Card in Page 1 */
+.sim-card {
+    background: linear-gradient(135deg, rgba(22, 30, 46, 0.96), rgba(15, 23, 42, 0.98));
+    border: 1px solid rgba(247, 108, 163, 0.35);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+}
+
+.sim-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.sim-header h4 {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sim-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 10px 0;
+}
+
+.sim-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: #1e293b;
+    outline: none;
+}
+
+.sim-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--brand-pink);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(247, 108, 163, 0.7);
+    border: 2px solid #fff;
+}
+
+.sim-val-pill {
+    background: rgba(247, 108, 163, 0.15);
+    border: 1px solid rgba(247, 108, 163, 0.3);
+    color: #f76ca3;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    min-width: 140px;
+    text-align: center;
+}
+
 /* Map Container */
 .map-box {
-    height: 380px;
+    height: 420px;
     border-radius: 10px;
     background: #090d16;
     border: 1px solid var(--border-card);

@@ -17,6 +17,10 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
+    <!-- Three.js & OrbitControls for 3D Visualizations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
     <!-- Custom Style -->
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -224,6 +228,25 @@
 
                         <!-- Grid 100 Ikon Orang -->
                         <div class="waffle-grid" id="waffleGrid"></div>
+
+                        <!-- Interactive Simulation Slider: Bantuan Biaya / PIP -->
+                        <div class="sim-card">
+                            <div class="sim-header">
+                                <h4>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--brand-pink)" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                                    <span>Simulasi Intervensi: Bantuan Finansial / Beasiswa PIP</span>
+                                </h4>
+                                <span style="font-size:11.5px; color:#38bdf8; font-weight:600;" id="simUpliftText">+0 pp Peluang Tamat</span>
+                            </div>
+                            <p style="font-size:11.5px; color:var(--text-secondary); margin-bottom:8px;">
+                                Geser untuk menguji dampak pemberian subsidi tunai / beasiswa pendidikan terhadap penutupan <em>Opportunity Gap</em>.
+                            </p>
+                            <div class="sim-slider-row">
+                                <span style="font-size:11.5px; color:var(--text-muted);">Rp 0</span>
+                                <input type="range" min="0" max="1800000" step="150000" value="0" class="sim-slider" id="simSlider">
+                                <span class="sim-val-pill" id="simValPill">Rp 0 / tahun</span>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Label Kejujuran Model Estimasi Indikatif -->
@@ -268,11 +291,35 @@
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-pink)" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
                                 <span>Peta Spasial Disparitas & Konteks Lokal Jawa Tengah</span>
                             </h3>
-                            <p>Klik titik lingkaran provinsi untuk sinkronisasi; drill-down 35 Kab/Kota di Jawa Tengah.</p>
+                            <p>Eksplorasi spasial multidimensi dengan rotasi 3D dan layer tematik interaktif.</p>
+                        </div>
+                        <!-- 2D / 3D Spatial Toggle -->
+                        <div class="view-mode-toggle">
+                            <button class="view-mode-btn active" id="btnView2D">🗺️ Peta 2D</button>
+                            <button class="view-mode-btn" id="btnView3D">🌐 Ekstrusi 3D</button>
                         </div>
                     </div>
+
+                    <!-- Interactive Map Toolbar: Layer Metric & Autocomplete Search -->
+                    <div class="map-toolbar">
+                        <div class="map-layer-selector">
+                            <button class="map-layer-btn active" data-layer="aps">Partisipasi SMA</button>
+                            <button class="map-layer-btn" data-layer="ikp">Indeks IKP</button>
+                            <button class="map-layer-btn" data-layer="klaster">Klaster</button>
+                            <button class="map-layer-btn" data-layer="hls">Harapan Sekolah (HLS)</button>
+                        </div>
+                        <div class="map-search-box">
+                            <span class="map-search-icon">🔍</span>
+                            <input type="text" class="map-search-input" id="mapSearchInput" placeholder="Cari daerah / zoom..." list="regionList">
+                            <datalist id="regionList"></datalist>
+                        </div>
+                    </div>
+
                     <div class="map-box">
-                        <div id="mapProvinsi"></div>
+                        <div id="mapProvinsi" style="width:100%; height:100%;"></div>
+                        <div id="threeMapContainer" class="three-container-wrapper" style="display:none;">
+                            <div id="threeMapHud" class="three-hud-box"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -284,7 +331,12 @@
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-pink)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 3v18h18"/></svg>
                                 <span>Scatter Akses vs Capaian (Klaster K-Means k=4)</span>
                             </h3>
-                            <p>Analisis tipologi 35 Kabupaten/Kota di Jawa Tengah berdasarkan dimensi Akses & Capaian.</p>
+                            <p>Tipologi 35 Kabupaten/Kota di Jawa Tengah dalam ruang 2D dan 3D Multidimensi.</p>
+                        </div>
+                        <!-- Scatter 2D vs 3D Toggle -->
+                        <div class="view-mode-toggle">
+                            <button class="view-mode-btn active" id="btnScatter2D">📊 2D</button>
+                            <button class="view-mode-btn" id="btnScatter3D">🎲 3D Cube</button>
                         </div>
                     </div>
 
@@ -296,9 +348,12 @@
                         <span class="cluster-pill tertinggal">● Tertinggal Struktural</span>
                     </div>
 
-                    <!-- Scatter Canvas -->
-                    <div class="chart-wrapper">
+                    <!-- Scatter Canvases (2D & 3D) -->
+                    <div id="scatter2DContainer" class="chart-wrapper">
                         <canvas id="scatterChart"></canvas>
+                    </div>
+                    <div id="scatter3DContainer" class="three-container-wrapper" style="height:330px; display:none;">
+                        <div id="threeScatterHud" class="three-hud-box"></div>
                     </div>
 
                     <!-- Drill-down Selector Kab/Kota Jateng -->
@@ -428,6 +483,7 @@ T_total = T_Between (Antarprovinsi: 31.8%) + T_Within (Dalam-provinsi / Antar ka
     <!-- Data & Model Engine Scripts -->
     <script src="js/data.js"></script>
     <script src="js/model.js"></script>
+    <script src="js/three_visuals.js"></script>
     <script src="js/app.js"></script>
 
 </body>

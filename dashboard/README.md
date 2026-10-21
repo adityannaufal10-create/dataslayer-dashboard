@@ -31,6 +31,8 @@ Dashboard ini dibangun sesuai dengan arahan konsep pada berkas `DRAFT DATASLAYER
 * **Simulasi Nyata 100 Ikon Orang (*Waffle Person Grid*):**
   * Grid 100 ikon orang interaktif dengan kalimat dinamis:  
     *“Dari 100 anak berprofil ini, sekitar X yang lulus SMA (berbanding Y pada profil pembanding)”*.
+* **Slider Interaktif Intervensi Beasiswa / PIP:**
+  * Pengguna dapat menggeser besaran bantuan dana pendidikan (Rp 0 – Rp 1.800.000/tahun) secara *real-time* untuk menguji kenaikan peluang tamat SMA dan penyempitan *Opportunity Gap*.
 * **Kejujuran Model (*Estimasi Indikatif*):**
   * Dilengkapi catatan transparansi rumus model estimasi berlapis:
     $$\text{Peluang}(j) \approx \min\Big(100\%, P_{\text{nasional}}(j \mid \text{kuintil}) \times R_{\text{provinsi}}(j) \times R_{\text{daerah}}(j) \times R_{\text{gender}}(j)\Big)$$
@@ -40,11 +42,17 @@ Dashboard ini dibangun sesuai dengan arahan konsep pada berkas `DRAFT DATASLAYER
 ### Halaman 2: "Mengapa Alamat Menentukan?" (*Spatial Causality & Clustering*)
 * **Sinkronisasi Filter Antarhalaman:**
   * Provinsi yang dipilih di Halaman 1 otomatis tersinkronisasi sebagai filter aktif di Halaman 2.
-* **Peta Spasial & Drill-down Konteks Lokal Jawa Tengah:**
-  * Peta interaktif Leaflet 38 provinsi di Indonesia dan titik 35 Kabupaten/Kota di Jawa Tengah.
-* **Scatter Plot Akses vs Capaian & Tipologi K-Means ($k=4$):**
-  * Sumbu X: **Dimensi Akses** (APS gabungan 7–18 tahun).
-  * Sumbu Y: **Dimensi Capaian** (Rata-rata Lama Sekolah / RLS dan Harapan Lama Sekolah / HLS).
+* **Peta Spasial Super Interaktif (2D & 3D Engine):**
+  * **Mode 2D Leaflet:**
+    * *Layer Thematic Selector:* Pilihan 4 mode pewarnaan peta (*Partisipasi SMA*, *Indeks IKP*, *Klaster K-Means*, dan *Harapan Sekolah HLS*).
+    * *Pencarian & Zoom Otomatis:* Kolom pencarian autocomplete untuk langsung melompat (*flyTo*) ke 38 provinsi atau 35 kabupaten/kota.
+    * *Hotspot Radar Beacons:* Titik radar berpendar pada daerah dengan disparitas struktural kritis (Brebes, Pemalang, Wonosobo, Papua Pegunungan).
+  * **Mode 3D Spasial (Three.js & OrbitControls):**
+    * visualisasi 3D kepulauan Indonesia dengan prisma heksagonal yang diekstrusi setinggi tingkat partisipasi/IKP.
+    * Rotasi 360°, zoom in/out, panning, efek partikel ambient, serta *hover raycasting HUD*.
+* **Scatter Plot Akses vs Capaian (Mode 2D & Mode 3D Cube):**
+  * **Mode 2D:** Scatter plot Chart.js dengan pewarnaan 4 klaster K-Means.
+  * **Mode 3D Cube (Three.js):** Kubus koordinat 3D interaktif yang menggabungkan Dimensi Akses (X), Dimensi Capaian (Y), dan IKP Skor (Z) dengan bola pendar 3D untuk tiap kabupaten/kota.
   * 4 Tipologi Hasil Klaster:
     1. 🟢 **Maju Merata:** Akses & Capaian Tinggi (Kota Semarang, Kota Surakarta, Kota Salatiga, Kota Magelang).
     2. 🟡 **Kota Timpang:** Akses Tinggi namun Capaian Masih Disparitas (Kab. Kudus, Kab. Sukoharjo, dkk).
