@@ -1,0 +1,68 @@
+{
+  "theil_total": 0.0842,
+  "theil_between": 0.0268,
+  "theil_within": 0.0574,
+  "pct_between": 31.8,
+  "pct_within": 68.2,
+  "insight": "68.2% ketimpangan pendidikan di Indonesia bersumber dari disparitas DALAM provinsi (antar kabupaten/kota), jauh lebih besar daripada ketimpangan antar provinsi (31.8%).",
+  "historical_trends": [
+    {
+      "tahun": 2019,
+      "total": 0.0985,
+      "between": 0.0335,
+      "within": 0.065
+    },
+    {
+      "tahun": 2020,
+      "total": 0.0954,
+      "between": 0.0321,
+      "within": 0.0633
+    },
+    {
+      "tahun": 2021,
+      "total": 0.0912,
+      "between": 0.0305,
+      "within": 0.0607
+    },
+    {
+      "tahun": 2022,
+      "total": 0.088,
+      "between": 0.029,
+      "within": 0.059
+    },
+    {
+      "tahun": 2023,
+      "total": 0.0856,
+      "between": 0.0278,
+      "within": 0.0578
+    },
+    {
+      "tahun": 2024,
+      "total": 0.0842,
+      "between": 0.0268,
+      "within": 0.0574
+    }
+  ],
+  "penyebab_gap_kontribusi": [
+    {
+      "faktor": "Status Ekonomi (Kuintil Pengeluaran)",
+      "kontribusi_persen": 48.2,
+      "keterangan": "Perbedaan daya beli, biaya oportunitas kerja anak"
+    },
+    {
+      "faktor": "Lokasi Spasial (Provinsi)",
+      "kontribusi_persen": 25.8,
+      "keterangan": "Alokasi APBD, ketersediaan SMA/SMK/PT per daerah"
+    },
+    {
+      "faktor": "Klasifikasi Wilayah (Desa vs Kota)",
+      "kontribusi_persen": 21.4,
+      "keterangan": "Akses transportasi, keterisolasian geografis"
+    },
+    {
+      "faktor": "Gender / Jenis Kelamin",
+      "kontribusi_persen": 4.6,
+      "keterangan": "Kesenjangan preferensi jenjang & gender parity"
+    }
+  ]
+}

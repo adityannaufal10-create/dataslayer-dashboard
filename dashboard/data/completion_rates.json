@@ -1,0 +1,67 @@
+{
+  "national_completion": {
+    "Q1": {
+      "name": "Kuintil 1 (Terbawah 20%)",
+      "SD": 96.36,
+      "SMP": 85.17,
+      "SMA": 52.41,
+      "PT": 12.35
+    },
+    "Q2": {
+      "name": "Kuintil 2 (Bawah-Menengah)",
+      "SD": 97.24,
+      "SMP": 88.62,
+      "SMA": 59.8,
+      "PT": 18.2
+    },
+    "Q3": {
+      "name": "Kuintil 3 (Menengah)",
+      "SD": 98.12,
+      "SMP": 91.12,
+      "SMA": 68.26,
+      "PT": 28.45
+    },
+    "Q4": {
+      "name": "Kuintil 4 (Menengah-Atas)",
+      "SD": 98.85,
+      "SMP": 94.3,
+      "SMA": 78.5,
+      "PT": 42.1
+    },
+    "Q5": {
+      "name": "Kuintil 5 (Teratas 20%)",
+      "SD": 99.42,
+      "SMP": 97.8,
+      "SMA": 89.65,
+      "PT": 63.8
+    }
+  },
+  "r_daerah": {
+    "Perkotaan": {
+      "SD": 1.003,
+      "SMP": 1.025,
+      "SMA": 1.085,
+      "PT": 1.185
+    },
+    "Perdesaan": {
+      "SD": 0.996,
+      "SMP": 0.968,
+      "SMA": 0.892,
+      "PT": 0.745
+    }
+  },
+  "r_gender": {
+    "Laki-laki": {
+      "SD": 0.998,
+      "SMP": 0.99,
+      "SMA": 0.976,
+      "PT": 0.952
+    },
+    "Perempuan": {
+      "SD": 1.002,
+      "SMP": 1.01,
+      "SMA": 1.025,
+      "PT": 1.048
+    }
+  }
+}
